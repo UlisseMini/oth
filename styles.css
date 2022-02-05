@@ -5,3 +5,17 @@ body {
   line-height: 1.4;
   padding: 16px;
 }
+
+a {
+  text-decoration: none;
+  color: #0074d9;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+pre {
+  -moz-tab-size: 2;
+  tab-size: 2;
+}
