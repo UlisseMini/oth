@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>It handles subdirectories</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.4.0/build/styles/default.min.css">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<p>This might seem trivial, but having the stylesheet be <code>/styles.css</code> doesn't work on github pages, since it tries to fetch <code>username.github.io/styles.css</code> instead of <code>username.github.io/repo/styles.css</code>.</p>
+<p>I solve this by making all stylesheet links relative. Since I don't want the user to have to configure their repo root (I could probably get it from a variable in actions, but that's cursed)</p>
+</body>
+</html>
