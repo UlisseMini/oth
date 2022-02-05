@@ -13,14 +13,20 @@ jobs:
         with:
           persist-credentials: false # build doesn't need git access
 
+      - name: Install dependencies
+        uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: install
+
       - name: Build site
-        run: |
-          yarn install && yarn build
+        uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: build
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@3.6.2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: .
+          FOLDER: out
 
