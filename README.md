@@ -6,7 +6,7 @@ The best form of "customizability" is changing the source code.
 
 ### Features
 
-- [ ] Works without client side javascript
-- [ ] Code highlighting
-- [ ] Math support
-- [ ] [[wikilinks]] support
+- [x] Works without client side javascript
+- [x] Code highlighting
+- [x] Math support
+- [x] [[wikilinks]] support
