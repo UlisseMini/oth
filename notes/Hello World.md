@@ -1,6 +1,6 @@
 ## Hello!
 
-This is an obsidian note, it can link to other notes via wikilinks (see: [[Configuration is bloat]] and [[It handles subdirectories]])
+This is an obsidian note, it can link to other notes via wikilinks (see: [[Configuration is bloat]] and [[subdir/It handles subdirectories]])
 
 We can do code highlighting
 ```python
