@@ -10,6 +10,7 @@ import remarkMath from "remark-math";
 import remarkWikiLink from "remark-wiki-link";
 import klaw from "klaw";
 import path from "path";
+import { mkdir } from "fs/promises";
 
 main();
 
@@ -19,17 +20,24 @@ async function main() {
       const sourceVFile = await read(file.path);
       const htmlVFile = await compile(sourceVFile);
 
-      htmlVFile.dirname = "./out";
+      // FIXME: Make dirname robust to paths like my-notes/notes
+      htmlVFile.dirname = sourceVFile.dirname.replace(/notes/, "out");
       htmlVFile.extname = ".html";
       htmlVFile.stem = pageResolver(sourceVFile.stem);
 
-      console.log(`wrote ${htmlVFile.path}`);
+      await mkdir(htmlVFile.dirname, { recursive: true });
       await write(htmlVFile);
+      console.log(`wrote ${htmlVFile.path}`);
     }
   }
 }
 
 const pageResolver = (name) => name.toLowerCase().replace(/ /g, "-");
+const depth = (file) =>
+  file.dirname
+    .split("/")
+    .reverse()
+    .findIndex((p) => p === "notes");
 
 async function compile(file) {
   return await unified()
@@ -50,7 +58,7 @@ async function compile(file) {
       css: [
         "https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css",
         "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.4.0/build/styles/default.min.css",
-        "/styles.css",
+        "../".repeat(depth(file)) + "styles.css",
       ],
     })
     .use(rehypeStringify)
