@@ -66,7 +66,6 @@ async function compile(file) {
     .use(rehypeKatex)
     .use(rehypeDocument, {
       title: fm.attributes.title || file.stem,
-      // Could fetch @latest css, but I'm afraid of breaking changes (eg. class name changes)
       css: [
         root + "styles.css",
         root + "highlight.css",
