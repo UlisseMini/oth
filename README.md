@@ -4,7 +4,7 @@ This is a template for publishing obsidian notes as a static site.
 The goal of the project is to stay minimal, since this is a template NOT a black box tool.
 The best form of "customizability" is changing the source code.
 
-:warning: Wikilinks to subdirs must be `[[subdir/note]]` NOT `[[note]]` as obsidian does by default
+:warning: Wikilinks to subdirs must be `[[subdir/note]]` NOT `[[note]]` as obsidian does by default. Change obsidian's "New link format" in Files & Links to "Relative path to file" to avoid issues.
 
 ### Features
 
