@@ -34,8 +34,8 @@ async function main() {
 }
 
 const pageResolver = (name) => name.toLowerCase().replace(/ /g, "-");
-const depth = (file) =>
-  file.dirname
+const depth = (dirname) =>
+  dirname
     .split("/")
     .reverse()
     .findIndex((p) => p === "notes");
@@ -43,6 +43,9 @@ const depth = (file) =>
 async function compile(file) {
   const fm = frontmatter(file.value.toString());
   file.value = fm.body;
+
+  // Relative path to root, needed to handle the root being user.github.io/project
+  const root = "../".repeat(depth(file.dirname));
 
   return await unified()
     .use(remarkParse)
@@ -60,9 +63,9 @@ async function compile(file) {
       title: fm.attributes.title || file.stem,
       // Could fetch @latest css, but I'm afraid of breaking changes (eg. class name changes)
       css: [
-        "https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css",
-        "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.4.0/build/styles/default.min.css",
-        "../".repeat(depth(file)) + "styles.css",
+        root + "styles.css",
+        root + "highlight.min.css",
+        root + "katex.min.css",
       ],
     })
     .use(rehypeStringify)
