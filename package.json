@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "front-matter": "^4.0.2",
+    "fs-extra": "^10.0.0",
+    "highlight.js": "^11.4.0",
+    "katex": "^0.15.2",
     "klaw": "^4.0.1",
     "rehype-document": "^6.0.1",
     "rehype-highlight": "^5.0.2",
