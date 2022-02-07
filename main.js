@@ -49,6 +49,7 @@ async function compile(file) {
     .use(remarkWikiLink, {
       // This pkg is yucky, the defaults are wierd. it's only ~30 lines though, the parsing
       // code is done here: https://github.com/landakram/micromark-extension-wiki-link
+      aliasDivider: "|",
       pageResolver: (name) => [pageResolver(name)],
       hrefTemplate: (permalink) => permalink,
     })
