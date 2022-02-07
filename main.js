@@ -21,20 +21,26 @@ async function main() {
       const sourceVFile = await read(file.path);
       const htmlVFile = await compile(sourceVFile);
 
-      // FIXME: Make dirname robust to paths like my-notes/notes
-      htmlVFile.dirname = sourceVFile.dirname.replace(/notes/, "out");
+      htmlVFile.dirname = notesToOutPath(sourceVFile.dirname);
       htmlVFile.extname = ".html";
       htmlVFile.stem = pageResolver(sourceVFile.stem);
 
       await fs.mkdir(htmlVFile.dirname, { recursive: true });
       await write(htmlVFile);
       console.log(`wrote ${htmlVFile.path}`);
+    } else {
+      if (!file.stats.isDirectory() && !file.path.includes(".obsidian")) {
+        await copy(file.path, notesToOutPath(file.path));
+      }
     }
   }
 
-  await vendor("katex/dist/katex.min.css");
-  await vendor("katex/dist/fonts");
-  await vendor("highlight.js/styles/default.css", "highlight.css");
+  await copy("node_modules/katex/dist/katex.min.css", "out/katex.min.css");
+  await copy("node_modules/katex/dist/fonts", "out/fonts");
+  await copy(
+    "node_modules/highlight.js/styles/default.css",
+    "out/highlight.css"
+  );
 }
 
 async function compile(file) {
@@ -42,7 +48,8 @@ async function compile(file) {
   file.value = fm.body;
 
   // Relative path to root, needed to handle the root being user.github.io/project
-  const root = "../".repeat(depth(file.dirname));
+  const depth = file.path.split("/").reverse().lastIndexOf("notes");
+  const root = "../".repeat(depth);
 
   return await unified()
     .use(remarkParse)
@@ -70,16 +77,13 @@ async function compile(file) {
     .process(file);
 }
 
+// convert "Hello World.md" -> hello-world.md
 const pageResolver = (name) => name.toLowerCase().replace(/ /g, "-");
-const depth = (dirname) =>
-  dirname
-    .split("/")
-    .reverse()
-    .findIndex((p) => p === "notes");
 
-async function vendor(p, out) {
-  const src = path.join("node_modules", p);
-  const dst = path.join("out", out || p.split("/").at(-1));
+// convert a/b/notes/c/d -> a/b/out/c/d
+const notesToOutPath = (p) => path.join("out", path.relative("notes", p));
+
+async function copy(src, dst) {
   await fs.copy(src, dst);
   console.log(`copied ${src} -> ${dst}`);
 }
