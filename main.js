@@ -11,6 +11,7 @@ import remarkWikiLink from "remark-wiki-link";
 import klaw from "klaw";
 import path from "path";
 import { mkdir } from "fs/promises";
+import frontmatter from "front-matter";
 
 main();
 
@@ -40,6 +41,9 @@ const depth = (file) =>
     .findIndex((p) => p === "notes");
 
 async function compile(file) {
+  const fm = frontmatter(file.value.toString());
+  file.value = fm.body;
+
   return await unified()
     .use(remarkParse)
     .use(remarkWikiLink, {
@@ -53,7 +57,7 @@ async function compile(file) {
     .use(rehypeHighlight)
     .use(rehypeKatex)
     .use(rehypeDocument, {
-      title: file.stem,
+      title: fm.attributes.title || file.stem,
       // Could fetch @latest css, but I'm afraid of breaking changes (eg. class name changes)
       css: [
         "https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css",
