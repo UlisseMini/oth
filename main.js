@@ -80,7 +80,7 @@ async function compile(file) {
     .process(file);
 }
 
-// convert "Hello World.md" -> hello-world.md
+// convert "Hello World" -> hello-world
 const pageResolver = (name) => name.toLowerCase().replace(/ /g, "-");
 
 // convert a/b/notes/c/d -> a/b/out/c/d
