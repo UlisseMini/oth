@@ -18,16 +18,8 @@ main();
 async function main() {
   for await (const file of klaw("./notes")) {
     if (path.extname(file.path) === ".md") {
-      const sourceVFile = await read(file.path);
-      const htmlVFile = await compile(sourceVFile);
-
-      htmlVFile.dirname = notesToOutPath(sourceVFile.dirname);
-      htmlVFile.extname = ".html";
-      htmlVFile.stem = pageResolver(sourceVFile.stem);
-
-      await fs.mkdir(htmlVFile.dirname, { recursive: true });
-      await write(htmlVFile);
-      console.log(`wrote ${htmlVFile.path}`);
+      const markdownVFile = await read(file.path);
+      await compileAndWrite(markdownVFile);
     } else {
       if (!file.stats.isDirectory() && !file.path.includes(".obsidian")) {
         await copy(file.path, notesToOutPath(file.path));
@@ -41,6 +33,18 @@ async function main() {
     "node_modules/highlight.js/styles/default.css",
     "out/highlight.css"
   );
+}
+
+async function compileAndWrite(markdownVFile) {
+  const htmlVFile = await compile(markdownVFile);
+
+  htmlVFile.dirname = notesToOutPath(markdownVFile.dirname);
+  htmlVFile.extname = ".html";
+  htmlVFile.stem = pageResolver(markdownVFile.stem);
+
+  await fs.mkdir(htmlVFile.dirname, { recursive: true });
+  await write(htmlVFile);
+  console.log(`wrote ${htmlVFile.path}`);
 }
 
 async function compile(file) {
