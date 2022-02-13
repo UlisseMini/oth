@@ -1,19 +1,19 @@
 # oth (Obsidian To HTML)
 
 This is a template for publishing obsidian notes as a static site.
-The goal of the project is to stay minimal, since this is a template NOT a black box tool.
-The best form of "customizability" is changing the source code.
+The goal of the project is to stay minimal, but have enough features to showcase how you do things in the [unified](https://unifiedjs.com/) ecosystem.
 
-:warning: Wikilinks to subdirs must be `[[subdir/note]]` NOT `[[note]]` as obsidian does by default. Change obsidian's "New link format" in Files & Links to "Relative path to file" to avoid issues.
+:warning: Wikilinks to subdirs must be `[[subdir/note]]` NOT `[[note]]` as obsidian does by default. Change obsidian's "New link format" in Files & Links to "Relative path to file" to avoid issues. [This will be fixed](https://github.com/UlisseMini/oth/issues/10).
 
 ### Features
+
+See [here](https://ulissemini.github.io/oth/) for a demo
 
 - [x] Works without client side javascript
 - [x] Code highlighting
 - [x] Math support
 - [x] [[wikilinks]] support
-- [x] Handles subdirectories
-- [ ] Generates navigation pages to make exploring notes easy
+- [x] Runs js code in \`\`\`js run blocks and splices in the exported markdown
 
 ### Setup
 
