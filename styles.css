@@ -1,9 +1,9 @@
 body {
   font-family: sans-serif;
-  max-width: 800px;
-  font-size: 1.2rem;
-  line-height: 1.4;
+  max-width: 700px;
+  line-height: 1.5;
   padding: 16px;
+  margin: 0 auto;
 }
 
 a {
@@ -18,4 +18,9 @@ a:hover {
 pre {
   -moz-tab-size: 2;
   tab-size: 2;
+}
+
+/* This makes tradeoffs, read https://github.com/KaTeX/KaTeX/issues/1023 */
+.math-display {
+  overflow: auto;
 }
