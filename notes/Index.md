@@ -25,9 +25,10 @@ Javascript code annotated with `run` will be executed, and it's results pasted i
 
     ```js run
 	import fs from "fs-extra";
-
+	
 	const files = await fs.readdir(".");
-	export const markdown = `files: ${files.join(" ")}`;
+	const listBody = files.map(f => `<li>${f}</li>`).join("\n");
+	export const markdown = `Files:\n<ul>${listBody}</ul>`;
 	```
 
 Becomes this
@@ -35,5 +36,6 @@ Becomes this
 import fs from "fs-extra";
 
 const files = await fs.readdir(".");
-export const markdown = `files: ${files.join(" ")}`;
+const listBody = files.map(f => `<li>${f}</li>`).join("\n");
+export const markdown = `Files:\n<ul>${listBody}</ul>`;
 ```

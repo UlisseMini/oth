@@ -17,6 +17,7 @@
     "rehype-document": "^6.0.1",
     "rehype-highlight": "^5.0.2",
     "rehype-katex": "^6.0.2",
+    "rehype-raw": "^6.1.1",
     "rehype-stringify": "^9.0.3",
     "remark-math": "^5.1.1",
     "remark-parse": "^10.0.1",

@@ -10,6 +10,7 @@ import remarkMath from "remark-math";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import remarkWikiLink from "remark-wiki-link";
+import rehypeRaw from "rehype-raw";
 import { read, write } from "to-vfile";
 import { unified } from "unified";
 import { is } from "unist-util-is";
@@ -69,7 +70,8 @@ async function compile(file) {
       hrefTemplate: (permalink) => permalink,
     })
     .use(remarkMath)
-    .use(remarkRehype)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw)
     .use(rehypeHighlight)
     .use(rehypeKatex)
     .use(rehypeDocument, {
