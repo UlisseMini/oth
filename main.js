@@ -53,9 +53,6 @@ async function compile(file) {
   const fm = frontmatter(file.value.toString());
   file.value = fm.body;
 
-  // temporary hack, see https://github.com/UlisseMini/oth/issues/11
-  file.value = file.value.replace(/foo/g);
-
   // Relative path to root, needed to handle the root being user.github.io/project
   // notes/a/b.md => depth = 1, notes/a.md => depth = 0
   const depth = file.path.split("/").reverse().lastIndexOf("notes") - 1;
