@@ -19,3 +19,8 @@ pre {
   -moz-tab-size: 2;
   tab-size: 2;
 }
+
+/* This makes tradeoffs, read https://github.com/KaTeX/KaTeX/issues/1023 */
+.math-display {
+  overflow: auto;
+}
