@@ -20,3 +20,20 @@ We can handle inline $2+2$ and display math
 $$
 \sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \dots = \sum_{k=0}^\infty \frac{x^{2k + 1}}{(2k+1)!}
 $$
+
+Javascript code annotated with `run` will be executed, and it's results pasted in. This
+
+    ```js run
+	import fs from "fs-extra";
+
+	const files = await fs.readdir(".");
+	export const markdown = `files: ${files.join(" ")}`;
+	```
+
+Becomes this
+```js run
+import fs from "fs-extra";
+
+const files = await fs.readdir(".");
+export const markdown = `files: ${files.join(" ")}`;
+```

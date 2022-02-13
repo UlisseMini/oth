@@ -23,6 +23,8 @@
     "remark-rehype": "^10.1.0",
     "remark-wiki-link": "^1.0.4",
     "to-vfile": "^7.2.3",
-    "unified": "^10.1.1"
+    "unified": "^10.1.1",
+    "unist-util-is": "^5.1.1",
+    "vfile-reporter": "^7.0.3"
   }
 }

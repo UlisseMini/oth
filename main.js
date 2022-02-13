@@ -12,6 +12,8 @@ import klaw from "klaw";
 import path from "path";
 import fs from "fs-extra";
 import frontmatter from "front-matter";
+import { is } from "unist-util-is";
+import { reporter } from "vfile-reporter";
 
 main();
 
@@ -61,6 +63,7 @@ async function compile(file) {
 
   return await unified()
     .use(remarkParse)
+    .use(remarkRunCode) // NOTE: it's important this comes first
     .use(remarkWikiLink, {
       // This pkg is yucky, the defaults are wierd. it's only ~30 lines though, the parsing
       // code is done here: https://github.com/landakram/micromark-extension-wiki-link
@@ -81,7 +84,47 @@ async function compile(file) {
       ],
     })
     .use(rehypeStringify)
-    .process(file);
+    .process(file)
+    .then((file) => {
+      if (file.messages.length > 0)
+        console.error(reporter(file, { quiet: true }));
+      return file;
+    });
+}
+
+function remarkRunCode() {
+  return async (tree, file) => {
+    // No recursion needed since code blocks are always at the top level
+    for (const index in tree.children) {
+      const node = tree.children[index];
+      if (is(node, "code") && node.meta === "run") {
+        try {
+          const module = await importInline(node.value);
+          const generatedTree = unified()
+            .use(remarkParse)
+            .parse(module.markdown);
+          tree.children.splice(index, 1, ...generatedTree.children);
+        } catch (e) {
+          const message = file.message(`In code block: ${e}`, node);
+          message.fatal = true;
+        }
+      }
+    }
+  };
+}
+
+let cacheBusts = 0;
+async function importInline(code) {
+  // could use ?q cache busting, but then I have to worry about race conditions
+  let file = `./.tmp${++cacheBusts}.js`;
+  let module;
+  try {
+    await fs.writeFile(file, code);
+    module = await import(file);
+  } finally {
+    await fs.remove(file);
+  }
+  return module;
 }
 
 // convert "Hello World" -> hello-world
