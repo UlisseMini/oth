@@ -18,8 +18,15 @@ import { reporter } from "vfile-reporter";
 
 main();
 
+// TODO: remove globals (needed by pageResolver)
+let files = [];
+
 async function main() {
   for await (const file of klaw("./notes")) {
+    files.push(file);
+  }
+
+  for (const file of files) {
     if (path.extname(file.path) === ".md") {
       const markdownVFile = await read(file.path);
       await compileAndWrite(markdownVFile);
@@ -43,7 +50,7 @@ async function compileAndWrite(markdownVFile) {
 
   htmlVFile.dirname = notesToOutPath(markdownVFile.dirname);
   htmlVFile.extname = ".html";
-  htmlVFile.stem = pageResolver(markdownVFile.stem);
+  htmlVFile.stem = normalizeLink(markdownVFile.stem);
 
   await fs.mkdir(htmlVFile.dirname, { recursive: true });
   await write(htmlVFile);
@@ -66,8 +73,10 @@ async function compile(file) {
       // This pkg is yucky, the defaults are wierd. it's only ~30 lines though, the parsing
       // code is done here: https://github.com/landakram/micromark-extension-wiki-link
       aliasDivider: "|",
-      pageResolver: (name) => [pageResolver(name)],
-      hrefTemplate: (permalink) => permalink,
+      // TODO: add existing pages, will remove 'new' class from anchor tags
+      // permalinks: permalinks,
+      pageResolver: (wikilink) => pageResolver(wikilink, file), // possible permalinks for a wikilink
+      hrefTemplate: (permalink) => root + permalink, // permalink to what the href should be
     })
     .use(remarkMath)
     .use(remarkRehype, { allowDangerousHtml: true })
@@ -126,8 +135,38 @@ async function importInline(code) {
   return module;
 }
 
-// convert "Hello World" -> hello-world
-const pageResolver = (name) => name.toLowerCase().replace(/ /g, "-");
+function pageResolver(wikilink, file) {
+  const fixedAbsLink = (p) =>
+    normalizeLink(path.relative("notes", p)).replace(/\.md$/, "");
+
+  // 1. Attempt relative resolve
+  const absolutePath = path.resolve(path.join(file.dirname, wikilink + ".md"));
+  if (files.find((f) => f.path === absolutePath)) {
+    return [fixedAbsLink(absolutePath)];
+  }
+
+  // 2. Attempt global unique
+  if (/^[\w\s]*$/g.test(wikilink)) {
+    const filtered = files.filter(
+      (f) => path.basename(f.path) === wikilink + ".md"
+    );
+
+    if (filtered.length === 1) {
+      return [fixedAbsLink(filtered[0].path)];
+    }
+    // TODO: better error
+  }
+
+  // Fail to resolve, not specific enough!
+  // TODO: This should be handled by remark-validate-links
+  // https://github.com/remarkjs/remark-validate-links/issues/66
+  const message = file.message(`failed to resolve wikilink [[${wikilink}]]`);
+  message.fatal = true;
+  return [];
+}
+
+// "This Kind/Of Stuff" -> "this-kind/of-stuff."
+const normalizeLink = (link) => link.toLowerCase().replace(/ /g, "-");
 
 // convert a/b/notes/c/d -> a/b/out/c/d
 const notesToOutPath = (p) => path.join("out", path.relative("notes", p));
