@@ -26,6 +26,7 @@
     "to-vfile": "^7.2.3",
     "unified": "^10.1.1",
     "unist-util-is": "^5.1.1",
+    "unist-util-visit": "^4.1.0",
     "vfile-reporter": "^7.0.3"
   }
 }

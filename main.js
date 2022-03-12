@@ -15,6 +15,7 @@ import { read, write } from "to-vfile";
 import { unified } from "unified";
 import { is } from "unist-util-is";
 import { reporter } from "vfile-reporter";
+import { visit } from "unist-util-visit";
 
 main();
 
@@ -70,6 +71,7 @@ async function compile(file) {
       hrefTemplate: (permalink) => permalink,
     })
     .use(remarkMath)
+    .use(remarkNoInlineDoubleDollar)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
     .use(rehypeHighlight)
@@ -124,6 +126,24 @@ async function importInline(code) {
     await fs.remove(file);
   }
   return module;
+}
+
+// See https://github.com/UlisseMini/oth/issues/13
+function remarkNoInlineDoubleDollar() {
+  return (tree, file) => {
+    visit(tree, "inlineMath", (node) => {
+      const start = node.position.start.offset;
+      const end = node.position.end.offset;
+      const lexeme = file.value.slice(start, end);
+
+      if (lexeme.startsWith("$$")) {
+        file.message(
+          "$$math$$ renders inline in remark-math but display in obsidian. Did you forget newlines?",
+          node
+        );
+      }
+    });
+  };
 }
 
 // convert "Hello World" -> hello-world

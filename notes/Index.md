@@ -21,21 +21,24 @@ $$
 \sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \dots = \sum_{k=0}^\infty \frac{x^{2k + 1}}{(2k+1)!}
 $$
 
+Be careful! inline double dollars `$$foo$$` render as inline, see [issue 13](https://github.com/UlisseMini/oth/issues/13). If you forget you'll receive a warning $$2 + 2$$
+
 Javascript code annotated with `run` will be executed, and it's results pasted in. This
 
     ```js run
-	import fs from "fs-extra";
-	
-	const files = await fs.readdir(".");
-	const listBody = files.map(f => `<li>${f}</li>`).join("\n");
-	export const markdown = `Files:\n<ul>${listBody}</ul>`;
-	```
+    import fs from "fs-extra";
+
+    const files = await fs.readdir(".");
+    const listBody = files.map(f => `<li>${f}</li>`).join("\n");
+    export const markdown = `Files:\n<ul>${listBody}</ul>`;
+    ```
 
 Becomes this
+
 ```js run
 import fs from "fs-extra";
 
 const files = await fs.readdir(".");
-const listBody = files.map(f => `<li>${f}</li>`).join("\n");
+const listBody = files.map((f) => `<li>${f}</li>`).join("\n");
 export const markdown = `Files:\n<ul>${listBody}</ul>`;
 ```
