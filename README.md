@@ -3,7 +3,7 @@
 This is a template for publishing obsidian notes as a static site.
 The goal of the project is to stay minimal, but have enough features to showcase how you do things in the [unified](https://unifiedjs.com/) ecosystem.
 
-:warning: Wikilinks to subdirs must be `[[subdir/note]]` NOT `[[note]]` as obsidian does by default. Change obsidian's "New link format" in Files & Links to "Relative path to file" to avoid issues. [This will be fixed](https://github.com/UlisseMini/oth/issues/10).
+:warning: Wikilinks to subdirs must be `[[subdir/note]]` NOT `[[note]]` as obsidian does by default. Change obsidian's "New link format" in Files & Links to "Relative path to file" to avoid issues. (Or better: use flat files like god intended)
 
 ### Features
 
