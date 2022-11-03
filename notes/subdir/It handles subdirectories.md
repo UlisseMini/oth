@@ -3,4 +3,4 @@ This might seem trivial, but having the stylesheet be `/styles.css` doesn't work
 
 I solve this by making all stylesheet links relative. Since I don't want the user to have to configure their repo root (I could probably get it from a variable in actions, but that's cursed)
 
-Links also work, see [[Another]] or return to [[../Index|The homepage]]
+Links also work, see [[./Another]] or return to [[../Index|The homepage]]

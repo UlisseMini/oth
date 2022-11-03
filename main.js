@@ -9,7 +9,7 @@ import rehypeStringify from "rehype-stringify";
 import remarkMath from "remark-math";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
-import remarkWikiLink from "remark-wiki-link";
+import remarkWikiLink from "remark-wiki-link-plus";
 import rehypeRaw from "rehype-raw";
 import { read, write } from "to-vfile";
 import { unified } from "unified";
@@ -64,10 +64,7 @@ async function compile(file) {
     .use(remarkParse)
     .use(remarkRunCode) // NOTE: it's important this comes first
     .use(remarkWikiLink, {
-      // This pkg is yucky, the defaults are wierd. it's only ~30 lines though, the parsing
-      // code is done here: https://github.com/landakram/micromark-extension-wiki-link
-      aliasDivider: "|",
-      pageResolver: (name) => [pageResolver(name)],
+      markdownFolder: "notes",
       hrefTemplate: (permalink) => permalink,
     })
     .use(remarkMath)

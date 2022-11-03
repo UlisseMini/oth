@@ -5,7 +5,7 @@ title: "Hello!"
 
 ## Hello!
 
-This is an obsidian note, it can link to other notes via wikilinks (see: [[Configuration is bloat]] and [[subdir/It handles subdirectories]])
+This is an obsidian note, it can link to other notes via wikilinks (see: [[Configuration is bloat]] and [[It handles subdirectories]])
 
 We can do code highlighting
 
@@ -22,6 +22,9 @@ $$
 $$
 
 Be careful! inline double dollars `$$foo$$` render as inline, see [issue 13](https://github.com/UlisseMini/oth/issues/13). If you forget you'll receive a warning $$2 + 2$$
+
+Images work fine
+![[Pasted image 20221103224759.png]]
 
 Javascript code annotated with `run` will be executed, and it's results pasted in. This
 
