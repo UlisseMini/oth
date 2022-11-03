@@ -14,12 +14,12 @@ jobs:
           persist-credentials: false # build doesn't need git access
 
       - name: Install dependencies
-        uses: borales/actions-yarn@v2.3.0
+        uses: borales/actions-yarn@v3
         with:
           cmd: install
 
       - name: Build site
-        uses: borales/actions-yarn@v2.3.0
+        uses: borales/actions-yarn@v3
         with:
           cmd: build
 
