@@ -6,6 +6,11 @@ body {
   margin: 0 auto;
 }
 
+img {
+  display: block;
+  max-width: 100%;
+}
+
 a {
   text-decoration: none;
   color: #0074d9;
